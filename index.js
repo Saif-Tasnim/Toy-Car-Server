@@ -40,10 +40,21 @@ async function run() {
       res.send("Toys Car site server is open");
     })
 
-    app.get('/carData', (req, res) => {
-      const query = req.query.product;
+    app.get('/carData', async (req, res) => {
+      // const query = req.query.category;
 
-      console.log(query);
+      let query = {};
+
+      if(req.query.category){
+        query = { category : req.query.category};
+      }
+
+      const cursor = carCollection.find(query);
+      const result = await cursor.toArray();
+      
+      res.send(result);
+
+      // console.log(query);
 
     })
 
