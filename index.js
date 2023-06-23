@@ -35,28 +35,32 @@ async function run() {
 
     const toy_car = client.db("toy_car");
     const carCollection = toy_car.collection("carData");
+    const carDetails = toy_car.collection("carDetails")
 
     app.get('/', (req, res) => {
       res.send("Toys Car site server is open");
     })
 
     app.get('/carData', async (req, res) => {
-      // const query = req.query.category;
-
       let query = {};
 
-      if(req.query.category){
-        query = { category : req.query.category};
+      if (req.query.category) {
+        query = { category: req.query.category };
       }
 
       const cursor = carCollection.find(query);
       const result = await cursor.toArray();
-      
+
       res.send(result);
 
-      // console.log(query);
-
     })
+
+    app.post('/toyDetails', async(req, res) => {
+      const data = req.body;
+      const result = await carDetails.insertOne(data);
+      res.send(result)
+    })
+
 
   } finally {
     // Ensures that the client will close when you finish/error
