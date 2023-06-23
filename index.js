@@ -55,6 +55,11 @@ async function run() {
 
     })
 
+    app.get('/toyDetails' , async (req, res) => {
+      const result = await carDetails.find().toArray();
+      res.send(result);
+    })
+
     app.post('/toyDetails', async(req, res) => {
       const data = req.body;
       const result = await carDetails.insertOne(data);
