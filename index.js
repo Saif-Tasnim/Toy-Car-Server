@@ -55,23 +55,41 @@ async function run() {
 
     })
 
-    app.get('/toyDetails' , async (req, res) => {
+    app.get('/toyDetails', async (req, res) => {
       const result = await carDetails.find().toArray();
       res.send(result);
     })
 
     // 6495d602fa491ddd779e57a6
-    app.get('/toyDetails/:id' , async (req, res) => {
+    app.get('/toyDetails/:id', async (req, res) => {
       const id = req.params.id;
-      const query = {_id : new ObjectId(id)};
+      const query = { _id: new ObjectId(id) };
       const result = await carDetails.findOne(query);
       res.send(result);
     })
 
-    app.post('/toyDetails', async(req, res) => {
+    app.post('/toyDetails', async (req, res) => {
       const data = req.body;
       const result = await carDetails.insertOne(data);
       res.send(result)
+    })
+
+    app.get('/myToys', async (req, res) => {
+      const email = req.query.email;
+      let query = {}
+      if (email) {
+        query = { seller_email: email };
+      }
+
+      const result = await carDetails.find(query).toArray();
+      res.send(result);
+    })
+
+    app.delete('/myToys/:id', async(req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await carDetails.deleteOne(query);
+      res.send(result);
     })
 
 
